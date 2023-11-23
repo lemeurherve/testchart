@@ -1,0 +1,30 @@
+annotations:
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/changes: |
+    :tada: :rocket: :tada: :cat:
+
+    Table for the example:
+
+    | plugin                | old version          | new version           |
+    |-----------------------|----------------------|-----------------------|
+    | kubernetes            | 3900.va_dce992317b_4 | 3937.vd7b_82db_e347b_ |
+    | configuration-as-code | 1625.v27444588cc3d   | 1647.ve39ca_b_829b_42 |
+    | git                   | 5.0.0                | 5.1.0                 |
+    | ldap                  | 671.v2a_9192a_7419d  | 682.v7b_544c9d1512    |
+  artifacthub.io/images: |
+    - name: jenkins
+      image: jenkins/jenkins:2.426.1-jdk11
+    - name: k8s-sidecar
+      image: kiwigrid/k8s-sidecar:1.24.4
+    - name: inbound-agent
+      image: jenkins/inbound-agent:3107.v665000b_51092-15
+    - name: backup
+      image: maorfr/kube-tasks:0.2.0
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/links: |
+    - name: Chart Source
+      url: https://github.com/jenkinsci/helm-charts/tree/main/charts/jenkins
+    - name: Jenkins
+      url: https://www.jenkins.io/
+    - name: support
+      url: https://github.com/jenkinsci/helm-charts/issues
