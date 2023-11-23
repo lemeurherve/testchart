@@ -12,6 +12,11 @@ Use the following links to reference issues, PRs, and commits prior to v2.6.0.
 The changelog until v1.5.7 was auto-generated based on git commits.
 Those entries include a reference to the git commit to be able to get more details.
 
+## 0.1.7
+
+Fix `artifacthub.io/changes` changelog annotation added to the released chart.
+Second line with `artifacthub.io/changes` changelog annotation added to the released chart.
+
 ## 0.1.6
 
 Fix `artifacthub.io/changes` changelog annotation added to the released chart.
