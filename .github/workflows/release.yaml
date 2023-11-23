@@ -64,7 +64,8 @@ jobs:
           stripped_changelog="${stripped_changelog#"${stripped_changelog%%[![:space:]]*}"}"
 
           # Add new line to ensure scalar value in Chart.yaml
-          printf -v change '"%s"\n' "${stripped_changelog}"
+          # TODO: add quotes only if it contains {}:[],&*#?|-<>=!%@/`
+          printf -v change '"%s"' "${stripped_changelog}"
 
           # Update chart annotations using strenv operator (https://mikefarah.gitbook.io/yq/operators/string-operators#string-blocks-bash-and-newlines)
           CHANGE="${change}" yq --inplace ".annotations.\"artifacthub.io/changes\" = strenv(CHANGE)" charts/jenkins/Chart.yaml
