@@ -70,7 +70,7 @@ jobs:
           printf -v change '%s\n' "${stripped_changelog}"
 
           # Update chart annotations using strenv operator (https://mikefarah.gitbook.io/yq/operators/string-operators#string-blocks-bash-and-newlines)
-          CHANGE="- ${change}" yq --inplace ".annotations.\"artifacthub.io/changes\" = strenv(CHANGE)" charts/jenkins/Chart.yaml
+          CHANGE="${change}" yq --inplace ".annotations.\"artifacthub.io/changes\" = strenv(CHANGE)" charts/jenkins/Chart.yaml
 
       - name: Show updated Chart.yaml
         run: |
