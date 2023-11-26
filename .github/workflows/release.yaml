@@ -52,29 +52,25 @@ jobs:
           echo "${changelog}" >> "${GITHUB_OUTPUT}"
           echo "${delimiter}" >> "${GITHUB_OUTPUT}"
 
-      # - name: Annotate Chart.yaml with first line of version changelog
-      #   if: steps.version_changelog.outputs.changelog != ''
-      #   env:
-      #     CHANGELOG: ${{ steps.version_changelog.outputs.changelog }}
-      #   run: |
-      #     # Remove first line if empty and replace emojis by spaces (issue with yq/chart-releaser which break multiline) then add a dash at the beginning of each line
-      #     # shellcheck disable=SC2016
-      #     stripped_changelog1=$(echo "${CHANGELOG}" \
-      #       | grep -v '^$' `# comment` \
-      #       | grep -v '^|' `# comment` \
-      #       | iconv -c -f utf8 -t ascii `# comment` \
-      #       | sed 's/^/- /')
-      #     # Remove leading spaces
-      #     stripped_changelog="${stripped_changelog#"${stripped_changelog%%[![:space:]]*}"}"
+      - name: Annotate Chart.yaml with first line of version changelog
+        if: steps.version_changelog.outputs.changelog != ''
+        env:
+          CHANGELOG: ${{ steps.version_changelog.outputs.changelog }}
+        run: |
+          # Remove first line if empty and replace emojis by spaces (issue with yq/chart-releaser which break multiline) then add a dash at the beginning of each line
+          # shellcheck disable=SC2016
+          stripped_changelog=$(echo "${CHANGELOG}" \
+          | grep -v '^$' `# remove empty lines` \
+          | grep -v '^|' `# remove table lines` \
+          | iconv -c -f utf8 -t ascii `# remove non ascii characters like emoji` \
+          | sed 's/^/- /' `# add a dash in front of every line` \
+          | sed 's/  / /') # double spaces
 
-      #     # Remove leading spaces
-      #     stripped_changelog="${stripped_changelog#"${stripped_changelog%%[![:space:]]*}"}"
+          # Add new line to ensure scalar value in Chart.yaml
+          printf -v change '%s\n' "${stripped_changelog}"
 
-      #     # Add new line to ensure scalar value in Chart.yaml
-      #     printf -v change '%s\n' "${stripped_changelog}"
-
-      #     # Update chart annotations using strenv operator (https://mikefarah.gitbook.io/yq/operators/string-operators#string-blocks-bash-and-newlines)
-      #     CHANGE="- ${change}" yq --inplace ".annotations.\"artifacthub.io/changes\" = strenv(CHANGE)" charts/jenkins/Chart.yaml
+          # Update chart annotations using strenv operator (https://mikefarah.gitbook.io/yq/operators/string-operators#string-blocks-bash-and-newlines)
+          CHANGE="- ${change}" yq --inplace ".annotations.\"artifacthub.io/changes\" = strenv(CHANGE)" charts/jenkins/Chart.yaml
 
       - name: Show updated Chart.yaml
         run: |
